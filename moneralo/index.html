@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<title>MonerAlo · Chat with Mrittika</title>
+<meta name="description" content="MonerAlo — a private, local-first AI companion chat app. Talk with Mrittika." />
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0d47a1" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="MonerAlo" />
+
+<!-- Icons -->
+<link rel="icon" type="image/x-icon" href="icons/favicon.ico" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+
+<!-- Font Awesome (icons only, no brand copying) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="css/variables.css" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/layout.css" />
+<link rel="stylesheet" href="css/chat.css" />
+<link rel="stylesheet" href="css/components.css" />
+<link rel="stylesheet" href="css/onboarding.css" />
+<link rel="stylesheet" href="css/settings.css" />
+<link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+<!-- ===================== App Root ===================== -->
+<div id="app" class="app">
+
+  <!-- ---------- Error Boundary (hidden by default) ---------- -->
+  <div id="error-boundary" class="error-boundary" hidden>
+    <div class="error-boundary__card">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <h2>Something went wrong</h2>
+      <p id="error-boundary-message">MonerAlo hit an unexpected error. Your conversations are safe in local storage.</p>
+      <div class="error-boundary__actions">
+        <button id="error-reload-btn" class="btn btn--primary">Reload App</button>
+        <button id="error-details-toggle" class="btn btn--ghost">Show details</button>
+      </div>
+      <pre id="error-boundary-details" class="error-boundary__details" hidden></pre>
+    </div>
+  </div>
+
+  <!-- ---------- Onboarding ---------- -->
+  <section id="onboarding" class="onboarding" hidden aria-label="Onboarding">
+    <!-- Populated by Onboarding.js -->
+  </section>
+
+  <!-- ---------- Main Shell ---------- -->
+  <div id="main-shell" class="main-shell" hidden>
+
+    <!-- Chat List View (mobile: full screen list; desktop: sidebar) -->
+    <aside id="chat-list-view" class="chat-list-view" aria-label="Conversations">
+      <header class="chat-list-view__header">
+        <div class="brand">
+          <img src="icons/icon-96.png" alt="" class="brand__logo" />
+          <span class="brand__name">MonerAlo</span>
+        </div>
+        <div class="chat-list-view__actions">
+          <button id="open-settings-btn" class="icon-btn" aria-label="Settings" title="Settings">
+            <i class="fa-solid fa-gear"></i>
+          </button>
+        </div>
+      </header>
+
+      <div class="chat-list-view__search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="chat-search-input" type="search" placeholder="Search messages" aria-label="Search messages" />
+      </div>
+
+      <div id="chat-list" class="chat-list" role="list">
+        <!-- Conversation items injected by ChatList.js -->
+      </div>
+
+      <button id="new-chat-btn" class="fab" aria-label="New chat" title="New chat">
+        <i class="fa-solid fa-pen-to-square"></i>
+      </button>
+    </aside>
+
+    <!-- Chat Window -->
+    <main id="chat-window" class="chat-window" aria-label="Conversation with Mrittika">
+      <header id="profile-header" class="profile-header">
+        <button id="back-to-list-btn" class="icon-btn chat-window__back" aria-label="Back to chats">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <div class="profile-header__avatar-wrap">
+          <img id="mrittika-avatar" class="profile-header__avatar" src="assets/mrittika.png" alt="Mrittika" />
+          <span id="mrittika-status-dot" class="status-dot status-dot--online"></span>
+        </div>
+        <div class="profile-header__info">
+          <h1 class="profile-header__name">Mrittika</h1>
+          <p id="mrittika-status-text" class="profile-header__status">online</p>
+        </div>
+        <div class="profile-header__actions">
+          <button id="chat-menu-btn" class="icon-btn" aria-label="Chat options" title="Chat options">
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+          </button>
+        </div>
+      </header>
+
+      <div id="messages-container" class="messages-container" role="log" aria-live="polite" aria-label="Messages">
+        <div id="messages-list" class="messages-list">
+          <!-- Messages injected by ChatWindow.js -->
+        </div>
+        <div id="scroll-to-bottom-btn" class="scroll-to-bottom-btn" hidden>
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+      </div>
+
+      <div id="typing-indicator-row" class="typing-indicator-row" hidden>
+        <img class="typing-indicator-row__avatar" src="assets/mrittika.png" alt="" />
+        <div class="typing-indicator">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <footer id="composer" class="composer">
+        <div id="emoji-picker" class="emoji-picker" hidden></div>
+        <div class="composer__row">
+          <button id="emoji-toggle-btn" class="icon-btn composer__icon-btn" aria-label="Emoji picker" title="Emoji">
+            <i class="fa-regular fa-face-smile"></i>
+          </button>
+          <button id="attach-btn" class="icon-btn composer__icon-btn" aria-label="Attachment (unavailable)" title="Attachments are not available — MonerAlo has no backend/file storage">
+            <i class="fa-solid fa-paperclip"></i>
+          </button>
+          <div class="composer__input-wrap">
+            <textarea
+              id="composer-input"
+              class="composer__input"
+              placeholder="Type a message…"
+              rows="1"
+              maxlength="4000"
+              aria-label="Message"
+            ></textarea>
+          </div>
+          <button id="send-btn" class="send-btn" aria-label="Send message" disabled>
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+        <p id="composer-hint" class="composer__hint" hidden></p>
+      </footer>
+    </main>
+  </div>
+
+  <!-- ---------- Settings Panel (slide-over) ---------- -->
+  <div id="settings-overlay" class="overlay" hidden></div>
+  <aside id="settings-panel" class="settings-panel" hidden aria-label="Settings">
+    <!-- Populated by Settings.js -->
+  </aside>
+
+  <!-- ---------- Chat options menu ---------- -->
+  <div id="chat-menu-overlay" class="overlay overlay--transparent" hidden></div>
+  <div id="chat-menu" class="popover-menu" hidden role="menu">
+    <button class="popover-menu__item" data-action="search" role="menuitem"><i class="fa-solid fa-magnifying-glass"></i> Search in chat</button>
+    <button class="popover-menu__item" data-action="export-json" role="menuitem"><i class="fa-solid fa-file-code"></i> Export as JSON</button>
+    <button class="popover-menu__item" data-action="export-txt" role="menuitem"><i class="fa-solid fa-file-lines"></i> Export as TXT</button>
+    <button class="popover-menu__item" data-action="memories" role="menuitem"><i class="fa-solid fa-brain"></i> Memories</button>
+    <button class="popover-menu__item popover-menu__item--danger" data-action="delete-chat" role="menuitem"><i class="fa-solid fa-trash"></i> Delete this chat</button>
+  </div>
+
+  <!-- ---------- Generic Modal ---------- -->
+  <div id="modal-overlay" class="overlay" hidden></div>
+  <div id="modal" class="modal" hidden role="dialog" aria-modal="true">
+    <!-- Populated dynamically by Modal utility -->
+  </div>
+
+  <!-- ---------- Toast container ---------- -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- ---------- Offline banner ---------- -->
+  <div id="offline-banner" class="offline-banner" hidden>
+    <i class="fa-solid fa-cloud-arrow-down"></i>
+    <span>You're offline. Chat history is available, but Mrittika needs internet to reply.</span>
+  </div>
+</div>
+
+<!-- App scripts (ES modules) -->
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

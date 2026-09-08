@@ -1,0 +1,183 @@
+/* ==========================================================================
+   App Shell Layout
+   ========================================================================== */
+
+.app {
+  height: 100vh;
+  height: 100dvh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg-app);
+}
+
+.main-shell {
+  height: 100%;
+  display: flex;
+}
+
+/* ---------- Chat List (sidebar on desktop, full screen on mobile) ---------- */
+.chat-list-view {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  position: relative;
+  border-right: 1px solid var(--border-subtle);
+}
+
+.chat-list-view__header {
+  height: var(--header-height);
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.brand__logo {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+}
+.brand__name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--fs-lg);
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.chat-list-view__search {
+  margin: var(--space-3) var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--bg-surface-alt);
+  border-radius: var(--radius-round);
+  padding: 10px 16px;
+  color: var(--text-muted);
+}
+.chat-list-view__search input {
+  border: none;
+  background: none;
+  outline: none;
+  flex: 1;
+  color: var(--text-primary);
+  font-size: var(--fs-sm);
+}
+.chat-list-view__search input::placeholder {
+  color: var(--text-muted);
+}
+
+.chat-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-2) var(--space-2) 90px;
+}
+
+.fab {
+  position: absolute;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--brand-gradient);
+  color: #fff;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-fab);
+  transition: transform var(--dur-fast) var(--ease-standard);
+}
+.fab:hover { transform: translateY(-2px) scale(1.03); }
+.fab:active { transform: scale(0.95); }
+
+/* ---------- Chat Window ---------- */
+.chat-window {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-app);
+  min-width: 0;
+  position: relative;
+}
+
+.chat-window__back {
+  display: none;
+}
+
+/* ==========================================================================
+   Responsive: mobile shows one view at a time
+   ========================================================================== */
+@media (max-width: 860px) {
+  .main-shell {
+    position: relative;
+  }
+  .chat-list-view {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-right: none;
+    transition: transform var(--dur-slow) var(--ease-standard);
+  }
+  .chat-window {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    transform: translateX(100%);
+    transition: transform var(--dur-slow) var(--ease-standard);
+  }
+  /* When a chat is active, slide chat window in and list out */
+  .main-shell[data-view="chat"] .chat-list-view {
+    transform: translateX(-100%);
+  }
+  .main-shell[data-view="chat"] .chat-window {
+    transform: translateX(0%);
+  }
+  .chat-window__back {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 861px) {
+  .chat-list-view {
+    max-width: var(--sidebar-width);
+    flex: 0 0 var(--sidebar-width);
+  }
+}
+
+/* ---------- Offline banner ---------- */
+.offline-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  background: #3a2a10;
+  color: #ffd48a;
+  font-size: var(--fs-xs);
+  padding: 6px var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+  justify-content: center;
+}
+:root[data-theme="light"] .offline-banner,
+:root:not([data-theme="dark"]) .offline-banner {
+  background: #fff4e0;
+  color: #8a5a12;
+}

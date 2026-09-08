@@ -1,0 +1,369 @@
+/* ==========================================================================
+   Chat list items
+   ========================================================================== */
+
+.chat-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--dur-fast);
+}
+.chat-item:hover { background: var(--bg-surface-alt); }
+.chat-item.active { background: var(--bg-surface-alt); }
+
+.chat-item__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  object-fit: cover;
+  flex: 0 0 auto;
+}
+.chat-item__body {
+  flex: 1;
+  min-width: 0;
+}
+.chat-item__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+.chat-item__name {
+  font-weight: 600;
+  font-size: var(--fs-base);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chat-item__time {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  flex: 0 0 auto;
+}
+.chat-item__preview {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-8) var(--space-6);
+  color: var(--text-secondary);
+  height: 100%;
+  gap: var(--space-3);
+}
+.empty-state i {
+  font-size: 2.2rem;
+  color: var(--brand-royal-blue-2);
+  opacity: 0.6;
+}
+.empty-state h3 {
+  font-size: var(--fs-lg);
+  color: var(--text-primary);
+}
+.empty-state p {
+  font-size: var(--fs-sm);
+  max-width: 280px;
+}
+
+/* ==========================================================================
+   Overlays / Panels / Modals
+   ========================================================================== */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 18, 35, 0.45);
+  z-index: var(--z-overlay);
+  animation: fadeIn var(--dur-base) var(--ease-standard);
+  backdrop-filter: blur(1px);
+}
+.overlay--transparent {
+  background: transparent;
+}
+
+.settings-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(420px, 100%);
+  background: var(--bg-surface);
+  z-index: var(--z-panel);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  animation: slideInRight var(--dur-slow) var(--ease-standard);
+}
+
+.popover-menu {
+  position: fixed;
+  z-index: var(--z-menu);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-2);
+  min-width: 220px;
+  animation: popIn var(--dur-fast) var(--ease-standard);
+}
+.popover-menu__item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  text-align: left;
+  color: var(--text-primary);
+}
+.popover-menu__item:hover { background: var(--bg-surface-alt); }
+.popover-menu__item i { width: 16px; color: var(--text-secondary); }
+.popover-menu__item--danger { color: var(--status-danger); }
+.popover-menu__item--danger i { color: var(--status-danger); }
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: var(--z-modal);
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: min(440px, 92vw);
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: var(--space-6);
+  animation: popIn var(--dur-base) var(--ease-standard);
+}
+.modal__title {
+  font-size: var(--fs-lg);
+  margin-bottom: var(--space-2);
+}
+.modal__body {
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  margin-bottom: var(--space-5);
+}
+.modal__actions {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+.modal__close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+}
+
+.form-field {
+  margin-bottom: var(--space-4);
+}
+.form-field label {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+  color: var(--text-primary);
+}
+.form-field input[type="text"],
+.form-field input[type="password"],
+.form-field input[type="number"],
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-app);
+  color: var(--text-primary);
+  outline: none;
+  font-size: var(--fs-sm);
+  transition: border-color var(--dur-fast);
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--brand-royal-blue-2);
+}
+.form-field__hint {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+.form-field__row {
+  display: flex;
+  gap: var(--space-3);
+}
+.form-field__row .form-field { flex: 1; }
+
+.input-with-btn {
+  display: flex;
+  gap: var(--space-2);
+}
+.input-with-btn input { flex: 1; }
+
+/* Toggle switch */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) 0;
+}
+.toggle-row__label {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
+.toggle-row__desc {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.toggle {
+  position: relative;
+  width: 46px;
+  height: 26px;
+  flex: 0 0 auto;
+}
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+.toggle-track {
+  position: absolute;
+  inset: 0;
+  background: var(--border-strong);
+  border-radius: var(--radius-round);
+  transition: background var(--dur-fast);
+  cursor: pointer;
+}
+.toggle-track::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  top: 3px;
+  left: 3px;
+  transition: transform var(--dur-fast) var(--ease-standard);
+  box-shadow: var(--shadow-sm);
+}
+.toggle input:checked + .toggle-track {
+  background: var(--brand-royal-blue);
+}
+.toggle input:checked + .toggle-track::before {
+  transform: translateX(20px);
+}
+
+/* Range slider */
+.range-row {
+  padding: var(--space-2) 0;
+}
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--brand-royal-blue);
+}
+
+/* ==========================================================================
+   Toasts
+   ========================================================================== */
+.toast-container {
+  position: fixed;
+  bottom: var(--space-5);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: center;
+  width: min(420px, 92vw);
+  pointer-events: none;
+}
+.toast {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--fs-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  animation: toastIn var(--dur-base) var(--ease-standard);
+  pointer-events: auto;
+  max-width: 100%;
+}
+.toast--error { border-left: 3px solid var(--status-danger); }
+.toast--success { border-left: 3px solid var(--status-online); }
+.toast--info { border-left: 3px solid var(--brand-royal-blue); }
+
+/* ==========================================================================
+   Error boundary
+   ========================================================================== */
+.error-boundary {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: var(--bg-app);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+}
+.error-boundary__card {
+  max-width: 420px;
+  text-align: center;
+  background: var(--bg-surface);
+  padding: var(--space-8) var(--space-6);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+.error-boundary__card i {
+  font-size: 2.4rem;
+  color: var(--status-warning);
+  margin-bottom: var(--space-3);
+}
+.error-boundary__card p {
+  color: var(--text-secondary);
+  margin: var(--space-3) 0 var(--space-5);
+  font-size: var(--fs-sm);
+}
+.error-boundary__actions {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: center;
+}
+.error-boundary__details {
+  text-align: left;
+  background: var(--bg-surface-alt);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  margin-top: var(--space-4);
+  font-size: 0.7rem;
+  max-height: 200px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Confirmation dialogs reuse .modal */

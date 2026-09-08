@@ -1,0 +1,23 @@
+{
+  "name": "moneralo",
+  "version": "1.0.0",
+  "description": "MonerAlo — a private, local-first AI companion chat app (PWA). Chat with Mrittika.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes http-server . -p 5173 -c-1",
+    "start": "npm run dev",
+    "build": "node -e \"console.log('No build step needed — MonerAlo is plain HTML/CSS/JS. Just deploy the repo as-is (see README).')\"",
+    "serve:prod": "npx --yes http-server . -p 8080"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "keywords": [
+    "pwa",
+    "chat",
+    "openrouter",
+    "local-first"
+  ],
+  "license": "UNLICENSED"
+}
