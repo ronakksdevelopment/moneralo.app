@@ -65,6 +65,7 @@ export function confirmDialog({ title, body, confirmLabel = 'Confirm', cancelLab
     cancelBtn.addEventListener('click', () => {
       closeModal();
       resolve(false);
+      activeResolver = null;
     });
 
     const confirmBtn = document.createElement('button');
@@ -73,6 +74,7 @@ export function confirmDialog({ title, body, confirmLabel = 'Confirm', cancelLab
     confirmBtn.addEventListener('click', () => {
       closeModal();
       resolve(true);
+      activeResolver = null;
     });
 
     actions.appendChild(cancelBtn);
@@ -88,6 +90,7 @@ export function confirmDialog({ title, body, confirmLabel = 'Confirm', cancelLab
     o.onclick = () => {
       closeModal();
       resolve(false);
+      activeResolver = null;
     };
 
     activeResolver = resolve;

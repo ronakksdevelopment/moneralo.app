@@ -78,7 +78,7 @@ export class ChatList {
         : 'Say hi to start the conversation…';
 
       item.innerHTML = `
-        <img class="chat-item__avatar" src="assets/mrittika.png" alt="" />
+        <img class="chat-item__avatar" src="https://i.ibb.co/rRbgDspP/mrittika.png" onerror="this.onerror=null;this.src='assets/mrittika.png';" alt="" />
         <div class="chat-item__body">
           <div class="chat-item__top">
             <span class="chat-item__name"></span>

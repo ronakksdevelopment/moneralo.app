@@ -279,7 +279,6 @@ export class Settings {
       const existing = StorageService.getApiConfig();
       StorageService.saveApiConfig({ ...existing, ...next, keyStatus: existing.apiKey === next.apiKey ? existing.keyStatus : 'unknown' });
       showToast('Settings saved.', 'success');
-      this._renderApiSection(body._parentRerenderTarget || body); // no-op fallback
       this._navigate('api');
     });
 

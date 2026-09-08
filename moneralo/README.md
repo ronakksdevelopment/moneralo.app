@@ -20,12 +20,12 @@ database, no build step required — designed to be hosted for free on
 - **No accounts, no analytics, no ads, no tracking.**
 - Mrittika is an **AI persona**, not a real person, and the app never
   presents her as one.
-- ⚠️ **About the avatar image**: this build ships a simple illustrated
-  placeholder avatar for Mrittika (`assets/mrittika.png`) rather than the
-  external image URL referenced in the original spec, since fetching and
-  permanently embedding an arbitrary third-party image isn't something this
-  build process does automatically. Swap in your own image any time —
-  see "Customizing" below.
+- **About the avatar/brand images**: Mrittika's avatar and the MonerAlo
+  brand mark load from the external URLs specified for this build
+  (`i.ibb.co`). If that host is unreachable (offline, blocked, link changes),
+  every `<img>` tag automatically falls back to the bundled local copies in
+  `assets/` and `icons/` via `onerror`, so the app never shows a broken
+  image. Swap in your own image any time — see "Customizing" below.
 
 ---
 

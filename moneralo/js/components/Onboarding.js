@@ -63,7 +63,7 @@ export class Onboarding {
 
     if (step === 'welcome') {
       stepEl.innerHTML = `
-        <div class="onboarding__hero"><img src="assets/mrittika.png" alt="Mrittika" /></div>
+        <div class="onboarding__hero"><img src="https://i.ibb.co/rRbgDspP/mrittika.png" onerror="this.onerror=null;this.src='assets/mrittika.png';" alt="Mrittika" /></div>
         <h1 class="onboarding__title">Welcome to MonerAlo</h1>
         <p class="onboarding__text">Meet <strong>Mrittika</strong> — your private AI chat companion. Talk naturally in Bengali, Benglish, English, or a mix of all three.</p>
         <div class="onboarding__spacer"></div>
@@ -119,7 +119,7 @@ export class Onboarding {
       `;
     } else if (step === 'ready') {
       stepEl.innerHTML = `
-        <div class="onboarding__hero"><img src="assets/mrittika.png" alt="Mrittika" /></div>
+        <div class="onboarding__hero"><img src="https://i.ibb.co/rRbgDspP/mrittika.png" onerror="this.onerror=null;this.src='assets/mrittika.png';" alt="Mrittika" /></div>
         <h1 class="onboarding__title">All set!</h1>
         <p class="onboarding__text">Mrittika's ready to chat whenever you are. You can change your API key, model, theme, and sound anytime in Settings.</p>
         <div class="onboarding__spacer"></div>
