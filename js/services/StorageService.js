@@ -34,7 +34,7 @@ const DEFAULT_SETTINGS = () => ({
 
 const DEFAULT_API_CONFIG = () => ({
   apiKey: '',
-  model: 'openai/gpt-4o-mini',
+  model: 'openrouter/free',
   endpoint: 'https://openrouter.ai/api/v1/chat/completions',
   temperature: 0.9,
   maxTokens: 700,

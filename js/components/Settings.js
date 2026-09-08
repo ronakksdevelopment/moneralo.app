@@ -13,6 +13,7 @@ import { confirmDialog } from '../utils/modal.js';
 import { looksLikeApiKey, downloadTextFile } from '../utils/helpers.js';
 
 const RECOMMENDED_MODELS = [
+  { id: 'openrouter/free', label: 'OpenRouter Free (default, no cost)' },
   { id: 'openai/gpt-4o-mini', label: 'GPT-4o mini (fast, affordable)' },
   { id: 'openai/gpt-4o', label: 'GPT-4o (higher quality)' },
   { id: 'anthropic/claude-3.5-sonnet', label: 'Claude 3.5 Sonnet' },

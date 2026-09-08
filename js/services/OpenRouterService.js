@@ -74,7 +74,7 @@ export const OpenRouterService = {
           'X-Title': 'MonerAlo',
         },
         body: JSON.stringify({
-          model: config.model || 'openai/gpt-4o-mini',
+          model: config.model || 'openrouter/free',
           messages,
           temperature: typeof config.temperature === 'number' ? config.temperature : 0.9,
           max_tokens: typeof config.maxTokens === 'number' ? config.maxTokens : 700,
@@ -141,7 +141,7 @@ export const OpenRouterService = {
           'X-Title': 'MonerAlo',
         },
         body: JSON.stringify({
-          model: model || 'openai/gpt-4o-mini',
+          model: model || 'openrouter/free',
           messages: [{ role: 'user', content: 'Hi' }],
           max_tokens: 5,
         }),

@@ -171,11 +171,13 @@ the offline banner.
 
 ### Choosing a model
 
-The Settings screen offers a shortlist of commonly used OpenRouter models
-(GPT-4o mini, GPT-4o, Claude 3.5 Sonnet, Claude 3 Haiku, Gemini 1.5 Flash,
-Llama 3.1 8B, Mistral 7B) plus a **Custom model ID** field for any other
-OpenRouter-supported model string (e.g. `provider/model-name`). Temperature
-and max tokens are also configurable there.
+MonerAlo defaults to **`openrouter/free`** — OpenRouter's free, auto-routed
+model — so it works out of the box with no cost once you've added a key.
+The Settings screen also offers a shortlist of other commonly used
+OpenRouter models (GPT-4o mini, GPT-4o, Claude 3.5 Sonnet, Claude 3 Haiku,
+Gemini 1.5 Flash, Llama 3.1 8B, Mistral 7B) plus a **Custom model ID** field
+for any other OpenRouter-supported model string (e.g. `provider/model-name`).
+Temperature and max tokens are also configurable there.
 
 ---
 

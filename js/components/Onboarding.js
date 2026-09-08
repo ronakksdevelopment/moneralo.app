@@ -156,7 +156,7 @@ export class Onboarding {
         nextBtn.disabled = true;
         feedback.textContent = 'Checking key…';
         feedback.style.color = 'var(--text-muted)';
-        const result = await OpenRouterService.testApiKey({ apiKey: value, model: 'openai/gpt-4o-mini', endpoint: 'https://openrouter.ai/api/v1/chat/completions' });
+        const result = await OpenRouterService.testApiKey({ apiKey: value, model: 'openrouter/free', endpoint: 'https://openrouter.ai/api/v1/chat/completions' });
         nextBtn.disabled = false;
         this.collectedApiKey = value;
         if (!result.ok) {
