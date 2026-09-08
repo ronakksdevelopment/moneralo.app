@@ -16,19 +16,37 @@ import { Onboarding } from './components/Onboarding.js';
 import { EmojiPicker } from './components/EmojiPicker.js';
 import { showToast } from './utils/toast.js';
 import { confirmDialog } from './utils/modal.js';
-import { downloadTextFile, formatTime } from './utils/helpers.js';
+import { downloadTextFile, formatTime, uuid } from './utils/helpers.js';
 
 /* ============================================================
    Global error boundary
    ============================================================ */
-function showErrorBoundary(err) {
+function describeError(err, fallbackMessage) {
+  if (err instanceof Error) {
+    return (err.stack || err.message || String(err));
+  }
+  if (typeof err === 'string' && err) return err;
+  if (fallbackMessage) return fallbackMessage;
+  try {
+    return JSON.stringify(err);
+  } catch {
+    return String(err);
+  }
+}
+
+function showErrorBoundary(err, context) {
   try {
     const boundary = document.getElementById('error-boundary');
     const detailsEl = document.getElementById('error-boundary-details');
+    const messageEl = document.getElementById('error-boundary-message');
     if (boundary) {
       boundary.hidden = false;
-      if (detailsEl && err) {
-        detailsEl.textContent = (err.stack || err.message || String(err)).slice(0, 4000);
+      if (messageEl && context) {
+        messageEl.textContent = `MonerAlo hit an unexpected error while ${context}. Your conversations are safe in local storage.`;
+      }
+      if (detailsEl) {
+        const detail = describeError(err, 'No error object was provided (this can happen with certain script-loading failures — check the browser console for more).');
+        detailsEl.textContent = (context ? `Context: ${context}\n\n` : '') + detail.slice(0, 4000);
       }
     }
   } catch {
@@ -37,14 +55,17 @@ function showErrorBoundary(err) {
 }
 
 window.addEventListener('error', (e) => {
-  console.error('[MonerAlo] Uncaught error:', e.error || e.message);
+  console.error('[MonerAlo] Uncaught error:', e.error || e.message, e.filename, e.lineno, e.colno);
   // Only show full-screen boundary for errors during initial boot;
   // afterwards prefer toasts so a stray error doesn't nuke an active chat.
-  if (!window.__monerAloBooted) showErrorBoundary(e.error);
+  if (!window.__monerAloBooted) {
+    const loc = e.filename ? ` (${e.filename}:${e.lineno}:${e.colno})` : '';
+    showErrorBoundary(e.error || e.message, `starting up${loc}`);
+  }
 });
 window.addEventListener('unhandledrejection', (e) => {
   console.error('[MonerAlo] Unhandled promise rejection:', e.reason);
-  if (!window.__monerAloBooted) showErrorBoundary(e.reason);
+  if (!window.__monerAloBooted) showErrorBoundary(e.reason, 'starting up (unhandled promise rejection)');
 });
 
 document.getElementById('error-reload-btn')?.addEventListener('click', () => location.reload());
@@ -58,8 +79,15 @@ document.getElementById('error-details-toggle')?.addEventListener('click', (e) =
    Boot
    ============================================================ */
 function boot() {
+  // StorageService must work (it has its own internal try/catch on every
+  // read/write), but ThemeService touches matchMedia which has slightly
+  // different support across browsers — never let it block boot.
   StorageService.init();
-  ThemeService.init();
+  try {
+    ThemeService.init();
+  } catch (err) {
+    console.warn('[MonerAlo] ThemeService.init failed (non-fatal):', err);
+  }
 
   const settings = StorageService.getSettings();
 
@@ -102,7 +130,7 @@ function boot() {
       ];
       sampleMessages.forEach((m, i) => {
         StorageService.addMessage(convo.id, {
-          id: crypto.randomUUID ? crypto.randomUUID() : String(Math.random()),
+          id: uuid(),
           conversationId: convo.id,
           role: m.role,
           content: m.content,
@@ -382,7 +410,13 @@ try {
   boot();
 } catch (err) {
   console.error('[MonerAlo] Fatal boot error:', err);
-  showErrorBoundary(err);
+  showErrorBoundary(err, 'initializing the app');
 }
 
-registerServiceWorker();
+try {
+  registerServiceWorker();
+} catch (err) {
+  // Service worker registration is a nice-to-have (offline shell); never
+  // let a failure here affect the rest of the app.
+  console.warn('[MonerAlo] registerServiceWorker threw synchronously:', err);
+}

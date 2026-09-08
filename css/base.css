@@ -2,6 +2,21 @@
    Base / Reset
    ========================================================================== */
 
+/*
+ * CRITICAL: elements toggled via the `hidden` attribute (error boundary,
+ * onboarding, overlays, panels, menus, modals, toasts, banners, pickers)
+ * each also set their own `display` value (flex/grid/etc.) for when they
+ * ARE visible. Because that class rule and the UA stylesheet's
+ * `[hidden] { display: none }` have equal specificity, source order wins —
+ * meaning our own CSS can silently override `[hidden]` and force an
+ * element to render even while `hidden` is set on it in the DOM.
+ * This single high-specificity rule guarantees `[hidden]` always wins,
+ * no matter what a component's own class rule requests.
+ */
+[hidden] {
+  display: none !important;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
